@@ -94,7 +94,7 @@ int main()
     
     std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     sf::Packet packet;
-    char data[256];
+    std::string s ;
     sf::TcpListener listener;
     //listener.setBlocking(false);
     // lie l'écouteur à un port
@@ -112,13 +112,22 @@ int main()
         printf("Wait client\n");
     }
     client.receive(packet);
-    packet >> data;
-
-    std::cout << data << "\n" <<std::endl;
-    while (true)
+    if (packet >> s)
     {
-      std::cout << data << "\n" <<std::endl;
+      std::cout <<"data:"<< s << "\n" <<std::endl;
     }
+    else
+    {
+        std::cout <<"erreur"<< "\n" <<std::endl;
+    }
+
+      
+    
+    /*while (true)
+    {
+
+      std::cout <<"data:"<< data << "\n" <<std::endl;
+    }*/
 
 
     /*
