@@ -37,7 +37,7 @@ int figures[7][4] =
 };
 
 // regarde si la pièce peut se déplacer
-bool check()
+/*bool check()
 {
    for (int i=0;i<4;i++)
       if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
@@ -70,13 +70,13 @@ sf::Packet& operator >>(sf::Packet& packet, Game& game)
     }
     
     return packet ;
-}
+}*/
 
 int main()
 {
-    srand(time(0));     
+    /*srand(time(0));     
     //chargement graphisme
-    RenderWindow window(VideoMode(1800, 1000), "The Game!");
+    //RenderWindow window(VideoMode(1800, 1000), "The Game!");
 
     Texture t1,t2,t3;
     if(!t1.loadFromFile("../Projet/images/tiles.png"))
@@ -88,17 +88,17 @@ int main()
     
     Sprite s(t1), background(t2), frame(t3),fram(t3);
     fram.move(Vector2f(450.f,0));
-    scaleToMinSize(background,1900,1100);
+    scaleToMinSize(background,1900,1100);*/
 
     //definition des parametres de jeu
     
-    
+    std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     sf::Packet packet;
-    
+    char data[256];
     sf::TcpListener listener;
-    listener.setBlocking(false);
+    //listener.setBlocking(false);
     // lie l'écouteur à un port
-    if (listener.listen(53000) != sf::Socket::Done)
+    if (listener.listen(52000) != sf::Socket::Done)
     {
         printf("Erreur port\n");
     }
@@ -106,16 +106,22 @@ int main()
     // accepte une nouvelle connexion
     sf::TcpSocket client;
     //client.setBlocking(false);
-    std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
-    while (listener.accept(client) != sf::Socket::Done)
+    
+    while(listener.accept(client) != sf::Socket::Done)
     {
         printf("Wait client\n");
     }
     client.receive(packet);
+    packet >> data;
+
+    std::cout << data << "\n" <<std::endl;
+    while (true)
+    {
+      std::cout << data << "\n" <<std::endl;
+    }
 
 
-
-
+    /*
     Clock clock;
 
     //TEST
@@ -151,14 +157,7 @@ int main()
         }
       client.receive(packet);
       packet >> myGame;
-      /*for (int i=0; i<20; i++)
-    {
-      for (int j=0;j<10;j++)
-      {
-        printf("%d\n",myGame.grille.grille[i][j]) ;
-      }
-     
-    }*/
+    
     
    
     
@@ -177,7 +176,7 @@ int main()
     //window.draw(myGame);
     
     window.display();
-    }
+    }*/
 
     return 0;
 }
