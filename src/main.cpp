@@ -25,7 +25,26 @@ int field[M][N] = {0};
 struct Point
 {int x,y;} a[4], b[4];
 
-//piece et commande avec borne => def protocole
+int figures[7][4] =
+{
+    1,3,5,7, // I
+    2,4,5,7, // Z
+    3,5,4,6, // S
+    3,5,4,7, // T
+    2,3,5,7, // L
+    3,5,7,6, // J
+    2,3,4,5, // O
+};
+
+// regarde si la pièce peut se déplacer
+/*bool check()
+{
+   for (int i=0;i<4;i++)
+      if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
+      else if (field[a[i].y][a[i].x]) return 0;
+
+   return 1;
+};
 sf::Packet& operator <<(sf::Packet& packet, const Game& game)
 {
      for (int i=0; i<20; i++)
@@ -51,39 +70,70 @@ sf::Packet& operator >>(sf::Packet& packet, Game& game)
     }
     
     return packet ;
-}
-
-
+}*/
 
 int main()
 {
-    srand(time(0));     
+    /*srand(time(0));     
     //chargement graphisme
-    RenderWindow window(VideoMode(1800, 1000), "The Game!");
+    //RenderWindow window(VideoMode(1800, 1000), "The Game!");
 
+    Texture t1,t2,t3;
+    if(!t1.loadFromFile("../Projet/images/tiles.png"))
+      printf("Erreur chargement\n");
+    if(!t2.loadFromFile("../Projet/images/background.png"))
+      printf("Erreur chargement\n");
+    if(!t3.loadFromFile("../Projet/images/frame.png"))
+      printf("Erreur chargement\n");
     
-  
+    Sprite s(t1), background(t2), frame(t3),fram(t3);
+    fram.move(Vector2f(450.f,0));
+    scaleToMinSize(background,1900,1100);*/
+
+    //definition des parametres de jeu
     
-    /* Reseau
-    sf::TcpSocket socket;
-    //socket.setBlocking(false);
-    sf::Socket::Status status = socket.connect("147.250.226.73",52000);
-    if(status != sf::Socket::Done)
-    {
-      printf("Erreur connection\n");
-    }
+    std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     sf::Packet packet;
-    std::string data ="Yousk2";
+    std::string s ;
+    sf::TcpListener listener;
+    //listener.setBlocking(false);
+    // lie l'écouteur à un port
+    if (listener.listen(52000) != sf::Socket::Done)
+    {
+        printf("Erreur port\n");
+    }
+
+    // accepte une nouvelle connexion
+    sf::TcpSocket client;
+    //client.setBlocking(false);
     
-    std::cout << data<< std::endl;
-    packet <<data ;
-    socket.send(packet);
-    */
+    while(listener.accept(client) != sf::Socket::Done)
+    {
+        printf("Wait client\n");
+    }
+    client.receive(packet);
+    if (packet >> s)
+    {
+      std::cout <<"data:"<< s << "\n" <<std::endl;
+    }
+    else
+    {
+        std::cout <<"erreur"<< "\n" <<std::endl;
+    }
+
+      
+    
+    /*while (true)
+    {
+
+      std::cout <<"data:"<< data << "\n" <<std::endl;
+    }*/
 
 
-    
+    /*
     Clock clock;
 
+    //TEST
     //definition de la grille
     
     Grille Tertest;
@@ -93,12 +143,11 @@ int main()
     Piece piecTest;
 
     //definition de la partie
-    Game myGame(Tertest,piecTest,true);
+    Game myGame(Tertest,piecTest);
     //definition temps
     float temps=0;
     
-    std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
-  
+    //std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     while (window.isOpen())
     {
         float time = clock.getElapsedTime().asSeconds();
@@ -115,31 +164,28 @@ int main()
             
               myGame.commande(e);
         }
-
+      client.receive(packet);
+      packet >> myGame;
     
-    /*
-    packet << myGame;
-    socket.send(packet);*/
-    
-    //printf("Reçu : %s",data);
-    if (not(myGame.end)&&!myGame.afficheMenu)
-    {
-      if (myGame.updateGame(temps) )
-      {
-       temps=0;
-       
-      }
-    }
-    
-    
-    myGame.levelup();
-    myGame.endGame();
     
    
-    window.draw(myGame);
+    
+    
+    
+        
+    if (myGame.updateGame(temps))
+    {
+      temps=0;
+    }
+    
+    
+     
+
+   
+    //window.draw(myGame);
     
     window.display();
-    }
+    }*/
 
     return 0;
 }
