@@ -89,10 +89,14 @@ int main()
     Grille grille1;
     Piece piece1;
     Game game1(grille1,piece1,false);
+    Grille grille2;
+    Piece piece2;
+    Game game2(grille2,piece2,false);
     //definition des parametres de jeu
     
     std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     sf::Packet packet;
+    sf::Packet packet2;
 
     std::string s ;
     sf::TcpListener listener;
@@ -112,12 +116,17 @@ int main()
     {
         printf("Wait client\n");
     }
+    while(listener.accept(client2) != sf::Socket::Done)
+    {
+        printf("Wait client2\n");
+    }
 
 
 
     //sleep(10);
     
     client.receive(packet);
+    client2.receive(packet2);
     if (packet >> s)
     {
       std::cout <<"data:"<< s << "\n" ;
@@ -128,28 +137,38 @@ int main()
     {
         std::cout <<"erreur"<< "\n" <<std::endl;
     }
+    if (packet2 >> s)
+    {
+      std::cout <<"data2:"<< s << "\n" ;
+      std::cout <<"you2";
+    }
     
+    else
+    {
+        std::cout <<"erreur2"<< "\n" <<std::endl;
+    }
     //client.setBlocking(false);
     while (true)
     {
       
       packet.clear();
+      packet2.clear();
       //reception grille;
       client.receive(packet);
-      
+      client2.receive(packet2);
       
       packet >> game1;
+      packet2 >> game2;
       packet.clear();
+      packet2.clear();
       std::cout <<"Youskboucle\n";
-      
-     
-
-      
-     
-    packet<<game1;
-    client.send(packet);
-    packet.clear();
-    sleep(1);
+      packet<<game2;
+      packet2 << game1;
+      client.send(packet);
+      client2.send(packet2);
+      packet.clear();
+      packet2.clear();
+      sleep(1);
       
       
     
