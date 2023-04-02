@@ -41,6 +41,8 @@ int figures[7][4] =
 sf::Packet& operator <<(sf::Packet& packet, const Game& game)
 {
     std::int16_t buffer;
+    std::int16_t score;
+    std::int16_t level;
      for (int i=0; i<20; i++)
     {
       for (int j=0;j<10;j++)
@@ -51,12 +53,18 @@ sf::Packet& operator <<(sf::Packet& packet, const Game& game)
       }
      
     }
+    score=game.score;
+    level=game.level;
+    packet<<score;
+    packet<<level;
     return packet ;
 }
 
 sf::Packet& operator >>(sf::Packet& packet, Game& game)
 {
   std::int16_t buffer;
+  std::int16_t score;
+  std::int16_t level;
     for (int i=0; i<20; i++)
     {
       for (int j=0;j<10;j++)
@@ -66,7 +74,10 @@ sf::Packet& operator >>(sf::Packet& packet, Game& game)
       }
      
     }
-    
+    packet<<score;
+    packet<<level;
+    game.score=score;
+    game.level=level;
     return packet ;
 }
 int main()
@@ -82,6 +93,7 @@ int main()
     
     std::cout << sf::IpAddress::getPublicAddress( ) << "\n";
     sf::Packet packet;
+
     std::string s ;
     sf::TcpListener listener;
     listener.setBlocking(false);
@@ -93,6 +105,7 @@ int main()
     std::cout <<"Yousk\n";
     // accepte une nouvelle connexion
     sf::TcpSocket client;
+    sf::TcpSocket client2;
     //client.setBlocking(false);
     
     while(listener.accept(client) != sf::Socket::Done)
@@ -132,14 +145,7 @@ int main()
      
 
       
-     for (int i=0; i<20; i++)
-      {
-      for (int j=0;j<10;j++)
-      {
-        std::cout <<  game1.grille.grille[i][j]<<";";
-      }
      
-    }
     packet<<game1;
     client.send(packet);
     packet.clear();
