@@ -37,7 +37,7 @@ int figures[7][4] =
     2,3,4,5, // O
 };
 
-
+//surcharge operateur Packet pour classe Game
 sf::Packet& operator <<(sf::Packet& packet, const Game& game)
 {
     std::int16_t buffer;
@@ -82,7 +82,7 @@ sf::Packet& operator >>(sf::Packet& packet, Game& game)
 }
 int main()
 {
-  
+   // Initialisation connexion
     std::string compteur;
     std::string compteure;
     
@@ -123,8 +123,8 @@ int main()
 
 
 
-    //sleep(10);
     
+    //premier echange pour teste connexion
     client.receive(packet);
     client2.receive(packet2);
     if (packet >> s)
@@ -148,6 +148,8 @@ int main()
         std::cout <<"erreur2"<< "\n" <<std::endl;
     }
     //client.setBlocking(false);
+
+    //boucle du serveur
     while (true)
     {
       
