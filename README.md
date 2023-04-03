@@ -1,9 +1,11 @@
 # Server
 
-Pas encore complet.  
-Pour l'instant ne gère qu'un joueur.  
+Gère obligatoirement deux joueurs  
   
-A lancer avant les scripts des joueurs.
+A lancer avant les scripts des joueurs.  
+
+S'arrête avec ctrl-c dans le terminal
+
 
 
 
